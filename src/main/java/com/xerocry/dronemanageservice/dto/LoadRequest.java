@@ -13,8 +13,8 @@ public class LoadRequest {
     private String droneSerialNumber;
 
     @Pattern(regexp = "^[a-zA-Z0-9\\-\\_]+$")
-    @NotBlank
-    private String medicationName;
+    @NotBlank    private String medicationName;
+
 
     @NotNull
     private double weight;

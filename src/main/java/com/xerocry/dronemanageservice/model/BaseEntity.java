@@ -6,23 +6,22 @@ import jakarta.persistence.Id;
 import jakarta.persistence.MappedSuperclass;
 import lombok.Getter;
 import lombok.Setter;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedBy;
+import org.hibernate.annotations.CreationTimestamp;
 
 import java.io.Serializable;
-import java.util.Date;
+import java.time.LocalDateTime;
 
 @Getter
 @Setter
 @MappedSuperclass
 public abstract class BaseEntity implements Serializable {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @CreatedDate
-    private Date createdAt;
+    @CreationTimestamp
+    private LocalDateTime createdAt;
 
-    @LastModifiedBy
-    private Date modifiedBy;
+    @CreationTimestamp
+    private LocalDateTime modifiedBy;
 }

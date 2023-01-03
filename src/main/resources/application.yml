@@ -1,0 +1,35 @@
+spring:
+  application:
+    name: xerocry-bank-service
+  datasource:
+    url: jdbc:postgresql://localhost:5432/dronedatabase
+    #        url: jdbc:postgresql://pgsql-db:5432/atmData
+    username: postgres
+    password: postgres
+  jpa:
+    show-sql: true
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        hbm2ddl:
+          auto: update
+  mvc:
+    pathmatch:
+      matching-strategy: ANT_PATH_MATCHER
+
+server:
+  port: 8100
+
+logging:
+  level:
+    org:
+      springframework:
+        web: INFO
+      hibernate: ERROR
+    net:
+      guides: DEBUG
+
+springdoc:
+  api-docs:
+    path: /v1/api-docs
+#Swagger Api http://localhost:8100/swagger-ui.html

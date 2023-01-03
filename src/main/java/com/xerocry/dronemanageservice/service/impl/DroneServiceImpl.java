@@ -18,9 +18,12 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 @AllArgsConstructor
 @Service
+//@Transactional(Transactional.TxType.REQUIRES_NEW)
 public class DroneServiceImpl implements DroneService {
 
     private final DroneRepo droneRepo;
@@ -41,41 +44,60 @@ public class DroneServiceImpl implements DroneService {
     }
 
     @Override
+    /*
+    * TODO:
+    *   1. Asynch annotation
+    *   2. Timeout for loading
+    *   3. Return id instead of object?
+    */
     public DroneResponse loadDroneWithMedication(LoadRequest loadRequest) {
         Drone drone = droneRepo.findBySerialNumber(loadRequest.getDroneSerialNumber()).orElseThrow(() -> new NotFoundException("No Drone with given serial number was found!"));
 
-        if (!drone.getStatus().equals(Status.IDLE) || !drone.getStatus().equals(Status.LOADING)) {
+        if (!drone.getStatus().equals(Status.IDLE)) {
             throw new DroneStatusException("Drone in the wrong state and cannot be loaded");
         }
+        updateDrone(drone, Status.LOADING);
 
         if (drone.getCapacity().compareTo(BigDecimal.valueOf(25)) < 0) {
             throw new DroneBatteryException("Not enough battery charge to load!");
-
         }
 
-        if (drone.getWeightLimit() < loadRequest.getWeight()) {
+        if (drone.getWeightLimit() < loadRequest.getWeight() + drone.getCurWeight()) {
             throw new DroneOverweightException("Load is too heavy for this drone!");
         }
 
-        drone.setStatus(Status.LOADING);
+        drone.setCurWeight(drone.getCurWeight() + loadRequest.getWeight());
 
         Medication medication = medicationServiceImpl.loadDrone(drone, loadRequest);
-
-        drone.setStatus(Status.LOADED);
+        updateDrone(drone, Status.LOADED);
 
         DroneResponse droneResponse = new DroneResponse(drone);
-        droneResponse.setStatus(Status.DELIVERING);
         droneResponse.setCurWeight(medication.getWeight());
         return droneResponse;
     }
 
     @Override
     public List<DroneResponse> findAllAvailableDrones() {
-        return null;
+        List<Drone> drones = droneRepo.findAllByStatus(Status.IDLE);
+
+        Function<Drone, DroneResponse> availableDrones = (drone) -> DroneResponse.builder()
+                .weightLimit(drone.getWeightLimit())
+                .serialNumber(drone.getSerialNumber())
+                .capacity(drone.getCapacity())
+                .curWeight(drone.getCurWeight())
+                .model(drone.getModel()).build();
+        return drones.stream().map(availableDrones).collect(Collectors.toList());
     }
 
     @Override
     public DroneResponse findDroneBySerialNumber(String serial) {
-        return null;
+        Drone drone = droneRepo.findBySerialNumber(serial).orElseThrow(() -> new NotFoundException("There is no drone with a given serial!"));
+        return new DroneResponse(drone);
     }
+
+    private void updateDrone(Drone drone, Status status) {
+        drone.setStatus(status);
+        droneRepo.save(drone);
+    }
+
 }

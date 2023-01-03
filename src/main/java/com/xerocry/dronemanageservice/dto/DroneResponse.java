@@ -1,9 +1,6 @@
 package com.xerocry.dronemanageservice.dto;
 
 import com.xerocry.dronemanageservice.model.Drone;
-import jakarta.persistence.Column;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
 import lombok.*;
 
 import java.math.BigDecimal;
