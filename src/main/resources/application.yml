@@ -22,9 +22,12 @@ server:
 
 logging:
   level:
+    com:
+      xerocry:
+        dronemanageservice: DEBUG
     org:
       springframework:
-        web: INFO
+        web: DEBUG
       hibernate: ERROR
     net:
       guides: DEBUG
@@ -33,3 +36,5 @@ springdoc:
   api-docs:
     path: /v1/api-docs
 #Swagger Api http://localhost:8100/swagger-ui.html
+
+drone-battery-check-interval: 10000
