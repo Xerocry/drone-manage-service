@@ -6,6 +6,7 @@ import com.xerocry.dronemanageservice.dto.LoadRequest;
 import com.xerocry.dronemanageservice.model.Medication;
 import com.xerocry.dronemanageservice.service.impl.DroneServiceImpl;
 import com.xerocry.dronemanageservice.service.impl.MedicationServiceImpl;
+import jakarta.websocket.server.PathParam;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.annotation.Validated;
@@ -13,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@Controller
+@RestController
 @RequestMapping("/api/v1/drones")
 @RequiredArgsConstructor
 public class DroneController {
@@ -37,13 +38,19 @@ public class DroneController {
         return droneService.findAllAvailableDrones();
     }
 
-    @GetMapping("get-drone-charge")
-    public DroneResponse getDroneBatteryLevel(@RequestParam String serialNumber) {
-        return droneService.findDroneBySerialNumber(serialNumber);
+    @GetMapping("get-drone-charge/{serial}")
+    /*
+    * TODO:
+    *  Change String to custom response
+    * */
+    public String getDroneBatteryLevel(@PathVariable String serial) {
+        return String.format("Drone: %s, Capacity: %.00f%%",
+                serial,
+                droneService.findDroneBySerialNumber(serial).getCapacity());
     }
 
-    @GetMapping("get-medications")
-    public List<Medication> getMedicationsFromDrone(@RequestParam String serial) {
+    @GetMapping("get-medications/{serial}")
+    public List<Medication> getMedicationsFromDrone(@PathVariable String serial) {
         return medicationService.getMedicationsFromDrone(serial);
     }
 

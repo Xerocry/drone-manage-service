@@ -1,7 +1,9 @@
 package com.xerocry.dronemanageservice.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 @Getter
 @Setter
@@ -9,13 +11,11 @@ import lombok.*;
 @AllArgsConstructor
 @Entity
 @Builder
+@EntityListeners(AuditingEntityListener.class)
 @Table(name = "medications")
-/*name (allowed only letters, numbers, ‘-‘, ‘_’);
-weight;
-code (allowed only upper case letters, underscore and numbers);
-image (picture of the medication case).*/
 public class Medication extends BaseEntity{
     @ManyToOne
+    @JsonIgnore
     @JoinColumn(referencedColumnName = "id", name = "drone_id")
     private Drone drone;
 

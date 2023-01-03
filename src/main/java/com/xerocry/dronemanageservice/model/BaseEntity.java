@@ -7,6 +7,7 @@ import jakarta.persistence.MappedSuperclass;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
@@ -22,6 +23,6 @@ public abstract class BaseEntity implements Serializable {
     @CreationTimestamp
     private LocalDateTime createdAt;
 
-    @CreationTimestamp
-    private LocalDateTime modifiedBy;
+    @UpdateTimestamp
+    private LocalDateTime modifiedDate;
 }
