@@ -1,8 +1,9 @@
 package com.xerocry.dronemanageservice.dto;
 
-import jakarta.validation.constraints.*;
 import lombok.Data;
 import org.springframework.validation.annotation.Validated;
+
+import javax.validation.constraints.*;
 
 @Data
 @Validated

@@ -34,7 +34,7 @@ logging:
 
 springdoc:
   api-docs:
-    path: /v1/api-docs
+    path: /v3/api-docs
 #Swagger Api http://localhost:8100/swagger-ui.html
 
-drone-battery-check-interval: 10000
+drone-battery-check-interval: 20000

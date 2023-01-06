@@ -2,10 +2,10 @@ package com.xerocry.dronemanageservice.model;
 
 import com.xerocry.dronemanageservice.dto.Model;
 import com.xerocry.dronemanageservice.dto.Status;
-import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+import javax.persistence.*;
 import java.math.BigDecimal;
 
 @Getter

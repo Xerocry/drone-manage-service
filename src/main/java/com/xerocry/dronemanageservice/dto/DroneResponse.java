@@ -13,15 +13,10 @@ import java.math.BigDecimal;
 @Data
 public class DroneResponse {
     private String serialNumber;
-
     private Model model;
-
     private Status status;
-
     private double weightLimit;
-
     private BigDecimal capacity;
-
     private double curWeight;
 
     public DroneResponse(Drone drone) {
